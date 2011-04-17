@@ -123,7 +123,19 @@ void LeafNode::print(Queue <BTreeNode*> &queue)
 
 LeafNode* LeafNode::remove(int value)
 {   // To be written by students
-  return NULL;  // filler for stub
+  int i;
+
+  for (i = 0; i < count && values[i] != value; i++);
+
+  if (i == count) // value not in leaf
+    return NULL;
+
+  for (int j = i; j < count; j++)
+    values[j] = values[j + 1];
+
+  --count;
+  
+  return NULL;  
 }  // LeafNode::remove()
 
 
