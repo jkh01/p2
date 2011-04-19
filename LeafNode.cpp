@@ -125,6 +125,7 @@ LeafNode* LeafNode::remove(int value)
 {   // To be written by students
   int i;
 
+  //removing
   for (i = 0; i < count && values[i] != value; i++);
 
   if (i == (count-1)) // value not in leaf
@@ -133,11 +134,32 @@ LeafNode* LeafNode::remove(int value)
   for (int j = i; j < (count-1); j++) //shift values down
     values[j] = values[j+1];
   values[j+1] = NULL; //node #count-1  must be null after remove
-
   --count;
   
-  return NULL;  
-}  // LeafNode::remove()
+  if(count < (LSize/2+1)) //we need to borrow or merge!
+    {
+      BTreeNode * leftSib = getLeftSibling();
+      if(leftSib = 0)
+	{
+	  //merge [deal with later]
+	}  
+      else
+	{
+	  if(leftSib->getCount()/2 + 1 <= LSize) //leftSib doesn't have enough either
+	    {
+	      //merge [deal with later]
+	    }
+	  int borrow = leftSib->getMaximum(); //we want the max value from sibling
+	  leftSib->remove(borrow); //remove it from leftSib, ours now!
+	  for(int i = count-2; i >= 0; i--) //shift remaining values up
+	    {
+	      values[i+1] = values[i]; 
+	    }
+	  values[0] = borrow; //install the new leaf min at [0]
+	}
+    }
+	return NULL;  
+    }  // LeafNode::remove()
 
 
 
