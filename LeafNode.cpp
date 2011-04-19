@@ -143,16 +143,13 @@ LeafNode* LeafNode::remove(int value)
   if(count < (leafSize/2+1)) //we need to borrow or merge!
     {
       BTreeNode * leftSib = getLeftSibling();
-      if(leftSib == 0)
-	{
-	  //merge [deal with later]
-	}  
-      else
+      if(leftSib != 0) //go left
 	{
 	  if(leftSib->getCount() <= leafSize/2+1) //leftSib doesn't have enough either
 	    {
 	      //merge [deal with later]
 	    }
+	  //borrowing works
 	  int borrow = leftSib->getMaximum(); //we want the max value from sibling
 	  leftSib->remove(borrow); //remove it from leftSib, ours now!
 	  for(int i = count-2; i >= 0; i--) //shift remaining values up
@@ -161,11 +158,25 @@ LeafNode* LeafNode::remove(int value)
 	    }
 	  values[0] = borrow; //install the new leaf min at [0]
 	}
-    }
-	return NULL;  
-    }  // LeafNode::remove()
-
-
+      else //go right
+	{
+	  BTreeNode * rightSib = getRightSibling(); //we always have one sibling per Sean
+	  if(rightSib->getCount() <= leafSize/2+1) //leftSib doesn't have enough either
+	    {
+	      //merge [deal with later]
+	    }
+	  //borrowing works
+	  int borrow = rightSib->getMinimum(); //we want the min value from sibling
+	  rightSib->remove(borrow); //remove it from rightSib, ours now!
+	  for(int i = 0; i < count-1; i++) //shift remaining values down
+	    {
+	      values[i] = values[i+1]; 
+	    }
+	  values[count-1] = borrow; //install the new leaf max at end
+	}
+    }  
+  return NULL;  
+} // LeafNode::remove()
 
 LeafNode* LeafNode::split(int value, int last)
 {
