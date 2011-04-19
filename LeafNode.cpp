@@ -131,21 +131,25 @@ LeafNode* LeafNode::remove(int value)
   if (i == (count-1)) // value not in leaf
     return NULL;
 
-  for (int j = i; j < (count-1); j++) //shift values down
-    values[j] = values[j+1];
-  values[j+1] = NULL; //node #count-1  must be null after remove
-  --count;
+  if(true==true) //give j local scope
+    {
+      int j;
+      for (j = i; j < (count-1); j++) //shift values down
+	values[j] = values[j+1];
+      values[j+1] = NULL; //node #count-1  must be null after remove
+      --count;
+    }
   
-  if(count < (LSize/2+1)) //we need to borrow or merge!
+  if(count < (leafSize/2+1)) //we need to borrow or merge!
     {
       BTreeNode * leftSib = getLeftSibling();
-      if(leftSib = 0)
+      if(leftSib == 0)
 	{
 	  //merge [deal with later]
 	}  
       else
 	{
-	  if(leftSib->getCount()/2 + 1 <= LSize) //leftSib doesn't have enough either
+	  if(leftSib->getCount() <= leafSize/2+1) //leftSib doesn't have enough either
 	    {
 	      //merge [deal with later]
 	    }

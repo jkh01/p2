@@ -6,6 +6,8 @@ ECS 60 Program 2
 
 2.          Add LeafNode code to deal with borrowing, and minimal code to InternalNode::remove() to call LeafNode::remove()
 
+(complete & semi-tested)
+
 3.          Add LeafNode code to deal with merging, ignoring InternalNode issues, and test accordingly.
 
 4.          Add code to InternalNode::remove to handle when it is a root, and has only one child
