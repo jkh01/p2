@@ -127,11 +127,12 @@ LeafNode* LeafNode::remove(int value)
 
   for (i = 0; i < count && values[i] != value; i++);
 
-  if (i == count) // value not in leaf
+  if (i == (count-1)) // value not in leaf
     return NULL;
 
-  for (int j = i; j < count; j++)
-    values[j] = values[j + 1];
+  for (int j = i; j < (count-1); j++) //shift values down
+    values[j] = values[j+1];
+  values[j+1] = NULL; //node #count-1  must be null after remove
 
   --count;
   
