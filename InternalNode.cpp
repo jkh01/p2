@@ -179,7 +179,7 @@ BTreeNode* InternalNode::remove(int value)
 
   if(killed != NULL) //if != NULL, we had a merge
   {
-    removeDriver(value, pos); //clean up the keys and children
+    removeDriver(pos); //clean up the keys and children
   }
 
   InternalNode* leftSib = (InternalNode*) getLeftSibling();
@@ -190,12 +190,12 @@ BTreeNode* InternalNode::remove(int value)
 	{
 	  if(leftSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
 	    {
-	      mergeLeft(value);
+	      mergeLeft();
 	      return this;
 	    }
 	  else //borrow
 	    {
-	      borrowLeft(value);
+	      borrowLeft();
 	      return NULL;
 	    }
 	}
@@ -203,12 +203,12 @@ BTreeNode* InternalNode::remove(int value)
 	{
 	  if(rightSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
 	    {
-	      mergeLeft(value);
+	      mergeLeft();
 	      return this;
 	    }
 	  else //borrow
 	    {
-	      borrowRight(value);
+	      borrowRight();
 	      return NULL;
 	    }
 	}
@@ -224,10 +224,9 @@ int InternalNode::getPosition(int value)
   return (i-1);
 }
 
-void InternalNode::removeDriver(int value, int i)
+void InternalNode::removeDriver(int i)
 {
   int j;
-  int min = getMinimum();
   for(j=i; j < count-1; j++) //write over old value (shift down)
     {
       keys[j] = keys[j+1];
@@ -237,7 +236,7 @@ void InternalNode::removeDriver(int value, int i)
   children[j] = NULL;
   count--;
 
-  if(value == min && parent)
+  if(i == 0 && parent)
     parent->resetMinimum(this);
 }
 
@@ -257,24 +256,24 @@ void InternalNode::addDriver(BTreeNode *ptr)
     parent->resetMinimum(this);
 }
 
-void InternalNode::mergeLeft(int value)
+void InternalNode::mergeLeft()
 {
+  InternalNode * leftSib = (InternalNode *) getLeftSibling();
   while(count != 0)
     {
-      borrowLeft(value); //expensive, annoying to optimize though
+      borrowLeft();
     }
-  InternalNode * leftSib = (InternalNode *) getLeftSibling();
   InternalNode * rightSib = (InternalNode *) getRightSibling();
   leftSib->rightSibling = rightSib;
   if(rightSib != NULL)
     rightSib->leftSibling = leftSib;
 }
 
-void InternalNode::mergeRight(int value)
+void InternalNode::mergeRight()
 {
   while(count != 0)
     {
-      borrowRight(value); //expensive, annoying to optimize though
+      borrowRight(); //expensive, annoying to optimize though
     }
   InternalNode * leftSib = (InternalNode *) getLeftSibling();
   InternalNode * rightSib = (InternalNode *) getRightSibling();
@@ -283,20 +282,19 @@ void InternalNode::mergeRight(int value)
     leftSib->rightSibling = rightSib;
 }
 
-void InternalNode::borrowLeft(int value)
+void InternalNode::borrowLeft()
 {
   InternalNode * leftSib = (InternalNode *) getLeftSibling();
-  int pos = getPosition(value);
-  addDriver(leftSib->children[pos]);
-  leftSib->removeDriver(value, pos);
+  int max = leftSib->getMaximum();
+  addDriver(leftSib->children[count-1]); //add max value from sibling to front of borrower
+  leftSib->removeDriver(getPosition(max)); //remove the max value from sibling
 }
 
-void InternalNode::borrowRight(int value)
+void InternalNode::borrowRight()
 {
-  InternalNode * rightSib = (InternalNode *) getRightSibling();
-  int pos = getPosition(value);
-  addDriver(rightSib->children[pos]);
-  rightSib->removeDriver(value,pos);
+  InternalNode * rightSib = (InternalNode *) getLeftSibling();
+  addDriver(rightSib->children[0]); //add min value from sibling to borrower
+  rightSib->removeDriver(0); //remove min value from sibling
 }
 
 void InternalNode::resetMinimum(const BTreeNode* child)

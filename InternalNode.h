@@ -24,12 +24,12 @@ public:
   void print(Queue <BTreeNode*> &queue);
   BTreeNode* remove(int value);
   int getPosition(int value);
-  void removeDriver(int value, int count);
+  void removeDriver(int count);
   void addDriver(BTreeNode *);
-  void mergeLeft(int value);
-  void mergeRight(int value);
-  void borrowLeft(int value);
-  void borrowRight(int value);
+  void mergeLeft();
+  void mergeRight();
+  void borrowLeft();
+  void borrowRight();
   void resetMinimum(const BTreeNode* child);
   InternalNode* split(BTreeNode *last);
 }; // InternalNode class
