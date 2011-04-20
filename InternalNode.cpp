@@ -252,6 +252,9 @@ void InternalNode::addDriver(BTreeNode *ptr)
     }
   keys[i] = key;
   children[i] = ptr;
+
+  if(i == 0 && parent)
+    parent->resetMinimum(this);
 }
 
 void InternalNode::mergeLeft(int value)
@@ -264,6 +267,10 @@ void InternalNode::mergeRight(int value)
 
 void InternalNode::borrowLeft(int value)
 {
+  InternalNode * leftSib = (InternalNode *) getLeftSibling();
+  int pos = getPosition(value);
+  addDriver(leftSib->children[pos]);
+  leftSib->removeDriver(value, pos);
 }
 
 void InternalNode::borrowRight(int value)
