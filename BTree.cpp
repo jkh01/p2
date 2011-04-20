@@ -23,7 +23,6 @@ void BTree::insert(const int value)
   } // if root split
 } // BTree::insert()
 
-
 void BTree::print()
 {
   BTreeNode *BTreeNodePtr;

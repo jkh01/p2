@@ -120,13 +120,12 @@ void LeafNode::print(Queue <BTreeNode*> &queue)
   cout << endl;
 } // LeafNode::print()
 
-
 LeafNode* LeafNode::remove(int value)
 {   // To be written by students
   int i; //removing
   for (i = 0; i < count && values[i] != value; i++);
 
-  if (i == (count-1)) // value not in leaf
+  if (i == count) // value not in leaf
     return NULL;
 
   if(true==true) //give j local scope
@@ -135,7 +134,7 @@ LeafNode* LeafNode::remove(int value)
       for (j = i; j < (count-1); j++) //shift values down
 	values[j] = values[j+1];
       values[j+1] = NULL; //node #count-1  must be null after remove
-      --count;
+      count--;
     }
   
   if(count < (leafSize/2+1)) //we need to borrow or merge!
@@ -146,12 +145,11 @@ LeafNode* LeafNode::remove(int value)
 	  if(leftSib->getCount() <= leafSize/2+1) //leftSib doesn't have enough to donate, merge!
 	    {
 	      mergeLeft();
-	      return *this;
+	      return this;
 	    }
 	  else //borrowing works
 	    {
 	      borrowLeft();
-	      return *this;
 	    }
 	}
       else //go right
@@ -160,12 +158,11 @@ LeafNode* LeafNode::remove(int value)
 	  if(rightSib->getCount() <= leafSize/2+1) //rightSib doesn't have enough either
 	    {
 	      mergeRight();
-	      return *this;
+	      return this;
 	    }
 	  else //borrowing works
 	    {
 	      borrowRight();
-	      return *this; 
 	    }
 	}
     }  
