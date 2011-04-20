@@ -275,6 +275,10 @@ void InternalNode::borrowLeft(int value)
 
 void InternalNode::borrowRight(int value)
 {
+  InternalNode * rightSib = (InternalNode *) getRightSibling();
+  int pos = getPosition(value);
+  addDriver(rightSib->children[pos]);
+  rightSib->removeDriver(value,pos);
 }
 
 void InternalNode::resetMinimum(const BTreeNode* child)
