@@ -180,15 +180,21 @@ BTreeNode* InternalNode::remove(int value)
 
   if(killed != NULL) //if != NULL, we had a merge
   {
-    fixMerge(i-1); //clean up the keys and children
+    fixMerge(value, i-1); //clean up the keys and children
   }
+
+  if(count <= internalSize/2 + internalSize%2)
+    {
+      
+    }
   
   return NULL; // filler for stub
 } // InternalNode::remove(int value)
 
-void InternalNode::fixMerge(int i)
+void InternalNode::fixMerge(int value, int i)
 {
   int j;
+  int min = getMinimum();
   for(j=i; j < count; j++) //write over old value
     {
       keys[j] = keys[j+1];
@@ -197,6 +203,9 @@ void InternalNode::fixMerge(int i)
   keys[j] = NULL;
   children[j] = NULL;
   count--;
+
+  if(value == min && parent)
+    parent->resetMinimum(this);
 }
 
 void InternalNode::resetMinimum(const BTreeNode* child)

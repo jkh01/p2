@@ -23,7 +23,7 @@ public:
   void insert(BTreeNode *newNode); // from a sibling
   void print(Queue <BTreeNode*> &queue);
   BTreeNode* remove(int value);
-  void fixMerge(int count);
+  void fixMerge(int value, int count);
   void resetMinimum(const BTreeNode* child);
   InternalNode* split(BTreeNode *last);
 }; // InternalNode class
