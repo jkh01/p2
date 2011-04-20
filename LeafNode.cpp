@@ -128,13 +128,30 @@ LeafNode* LeafNode::remove(int value)
   
   if(count < (leafSize/2 + leafSize%2) && parent != NULL) //we need to borrow or merge!
     {
+      //note: code is a bit convoluted since we segfault in the obvious version (rightSib->getCount() if rightSib == 0)
       LeafNode * leftSib = (LeafNode *) getLeftSibling();
+      LeafNode * rightSib = (LeafNode *) getRightSibling(); //we always have one sibling per Sean
       if(leftSib != 0) //go left
 	{
-	  if(leftSib->getCount() <= leafSize/2 + leafSize%2) //leftSib doesn't have enough to donate, merge!
+	  if(leftSib->getCount() <= leafSize/2 + leafSize%2) //leftSib doesn't have enough to donate
 	    {
-	      mergeLeft();
-	      return this;
+	      if(rightSib != 0) //rightSib doesn't have enough either
+		{
+		  if(rightSib->getCount() <= leafSize/2 + leafSize%2)
+		    {
+		      mergeLeft();
+		      return this;
+		    }
+		  else
+		    {
+		      borrowRight();
+		    }
+		}
+	      else
+		{
+		  mergeLeft();
+		  return this;
+		}
 	    }
 	  else //borrowing works
 	    {
@@ -143,7 +160,6 @@ LeafNode* LeafNode::remove(int value)
 	}
       else if (parent != NULL)//go right
 	{
-	  LeafNode * rightSib = (LeafNode *) getRightSibling(); //we always have one sibling per Sean
 	  if(rightSib->getCount() <= leafSize/2 + leafSize%2) //rightSib doesn't have enough either
 	    {
 	      mergeRight();
