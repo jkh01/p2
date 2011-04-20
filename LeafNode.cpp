@@ -145,6 +145,7 @@ LeafNode* LeafNode::remove(int value)
 		  else
 		    {
 		      borrowRight();
+		      return NULL;
 		    }
 		}
 	      else
@@ -156,6 +157,7 @@ LeafNode* LeafNode::remove(int value)
 	  else //borrowing works
 	    {
 	      borrowLeft();
+	      return NULL;
 	    }
 	}
       else if (parent != NULL)//go right
@@ -168,6 +170,7 @@ LeafNode* LeafNode::remove(int value)
 	  else //borrowing
 	    {
 	      borrowRight();
+	      return NULL;
 	    }
 	}
     }  

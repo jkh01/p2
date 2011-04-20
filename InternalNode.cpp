@@ -176,7 +176,20 @@ BTreeNode* InternalNode::remove(int value)
   int i;
   for(i = 0; (value >= keys[i]) && (i < count); i++){} //value is in child i-1
 
-  BTreeNode * kill = children[i-1]->remove(value); //recursive
+  BTreeNode* killed = children[i-1]->remove(value);
+
+  if(killed != NULL) //if != NULL, we had a merge
+  {
+    int j;
+    for(j=i-1; j < count; j++) //write over old value
+      {
+	keys[j] = keys[j+1];
+	children[j] = children[j+1];
+      }
+    keys[j] = NULL;
+    children[j] = NULL;
+    count--;
+  }
   
   return NULL; // filler for stub
 } // InternalNode::remove(int value)
