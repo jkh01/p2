@@ -174,9 +174,9 @@ void InternalNode::print(Queue <BTreeNode*> &queue)
 BTreeNode* InternalNode::remove(int value)
 {  // to be written by students
   int i;
-  for(i = 0; (value <= keys[i]) && (i < count); i++){} //value is in child i
+  for(i = 0; (value >= keys[i]) && (i < count); i++){} //value is in child i-1
 
-  BTreeNode * kill = children[i]->remove(value); //recursive
+  BTreeNode * kill = children[i-1]->remove(value); //recursive
   
   return NULL; // filler for stub
 } // InternalNode::remove(int value)
