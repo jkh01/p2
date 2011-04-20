@@ -191,7 +191,7 @@ BTreeNode* InternalNode::remove(int value)
 	  if(leftSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
 	    {
 	      mergeLeft(value);
-	      return NULL;//return this;
+	      return this;
 	    }
 	  else //borrow
 	    {
@@ -204,7 +204,7 @@ BTreeNode* InternalNode::remove(int value)
 	  if(rightSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
 	    {
 	      mergeLeft(value);
-	      return NULL; //return this;
+	      return this;
 	    }
 	  else //borrow
 	    {
@@ -259,10 +259,28 @@ void InternalNode::addDriver(BTreeNode *ptr)
 
 void InternalNode::mergeLeft(int value)
 {
+  while(count != 0)
+    {
+      borrowLeft(value); //expensive, annoying to optimize though
+    }
+  InternalNode * leftSib = (InternalNode *) getLeftSibling();
+  InternalNode * rightSib = (InternalNode *) getRightSibling();
+  leftSib->rightSibling = rightSib;
+  if(rightSib != NULL)
+    rightSib->leftSibling = leftSib;
 }
 
 void InternalNode::mergeRight(int value)
 {
+  while(count != 0)
+    {
+      borrowRight(value); //expensive, annoying to optimize though
+    }
+  InternalNode * leftSib = (InternalNode *) getLeftSibling();
+  InternalNode * rightSib = (InternalNode *) getRightSibling();
+  rightSib->leftSibling = leftSib;
+  if(leftSib != NULL)
+    leftSib->rightSibling = rightSib;
 }
 
 void InternalNode::borrowLeft(int value)
