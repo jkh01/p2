@@ -131,7 +131,7 @@ LeafNode* LeafNode::remove(int value)
       LeafNode * leftSib = (LeafNode *) getLeftSibling();
       if(leftSib != 0) //go left
 	{
-	  if(0==1) //leftSib->getCount() <= leafSize/2+1) //leftSib doesn't have enough to donate, merge!
+	  if(leftSib->getCount() <= leafSize/2 + leafSize%2) //leftSib doesn't have enough to donate, merge!
 	    {
 	      mergeLeft();
 	      return this;
@@ -144,7 +144,7 @@ LeafNode* LeafNode::remove(int value)
       else if (parent != NULL)//go right
 	{
 	  LeafNode * rightSib = (LeafNode *) getRightSibling(); //we always have one sibling per Sean
-	  if(0==1)//rightSib->getCount() <= leafSize/2+1) //rightSib doesn't have enough either
+	  if(rightSib->getCount() <= leafSize/2 + leafSize%2) //rightSib doesn't have enough either
 	    {
 	      mergeRight();
 	      return this;
@@ -182,6 +182,14 @@ bool LeafNode::removeDriver(int value)
 void LeafNode::mergeLeft()
 {
   LeafNode * leftSib = (LeafNode *) getLeftSibling();
+  while(count != 0)
+    {
+      int value = getMinimum(); //always add to end to save array shifting
+      removeDriver(value);
+      leftSib->addToThis(value);
+    }
+
+  /* potentially faster
   int sibCount = leftSib->getCount();
   int dif = sibCount - count; //difference in size
   for(int i = sibCount; i < leafSize; i++) //add 
@@ -191,12 +199,22 @@ void LeafNode::mergeLeft()
       values[sibCount-dif] = NULL; //delete old value
     }
   count = 0;
+  */
 }
 
 void LeafNode::mergeRight()
 {
   LeafNode * rightSib = (LeafNode *) getRightSibling();
-  int sibCount = rightSib->getCount();
+  while(count != 0)
+    {
+      int value = getMinimum(); //so we move less
+      removeDriver(value);
+      rightSib->addToThis(value);
+    }
+  
+  /* this code is potentially faster but also more perilous (maybe add after everything works for speed?)
+
+    int sibCount = rightSib->getCount();
   for(int i = sibCount-1; i >= 0; i--) //shift values up so we can merge in front  
     {
       rightSib->values[i+count] = rightSib->values[i];
@@ -207,7 +225,7 @@ void LeafNode::mergeRight()
       rightSib->values[i] = values[i];
       values[i] = NULL;
     }
-  count = 0;
+  count = 0;*/
 }
 
 void LeafNode::borrowLeft()
