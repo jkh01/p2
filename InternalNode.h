@@ -23,7 +23,8 @@ public:
   void insert(BTreeNode *newNode); // from a sibling
   void print(Queue <BTreeNode*> &queue);
   BTreeNode* remove(int value);
-  void fixMerge(int value, int count);
+  int findPosition(int value);
+  void removeDriver(int value, int count);
   void mergeLeft(int value);
   void mergeRight(int value);
   void borrowLeft(int value);
