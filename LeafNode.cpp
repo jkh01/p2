@@ -204,6 +204,11 @@ void LeafNode::mergeLeft()
       removeDriver(value);
       leftSib->addToThis(value);
     }
+  LeafNode * rightSib = (LeafNode *) getRightSibling();
+  
+  if(rightSib!=0)
+    rightSib->leftSibling = leftSib;
+  leftSib->rightSibling = rightSib;
 
   /* potentially faster
   int sibCount = leftSib->getCount();
@@ -227,6 +232,10 @@ void LeafNode::mergeRight()
       removeDriver(value);
       rightSib->addToThis(value);
     }
+  LeafNode * leftSib = (LeafNode *) getLeftSibling();
+  rightSib->leftSibling = leftSib;
+  if(leftSib != 0) //if left exists
+    leftSib->rightSibling = rightSib;
   
   /* this code is potentially faster but also more perilous (maybe add after everything works for speed?)
 
