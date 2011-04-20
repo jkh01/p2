@@ -146,10 +146,12 @@ LeafNode* LeafNode::remove(int value)
 	  if(leftSib->getCount() <= leafSize/2+1) //leftSib doesn't have enough to donate, merge!
 	    {
 	      mergeLeft();
+	      return *this;
 	    }
 	  else //borrowing works
 	    {
 	      borrowLeft();
+	      return *this;
 	    }
 	}
       else //go right
@@ -158,10 +160,12 @@ LeafNode* LeafNode::remove(int value)
 	  if(rightSib->getCount() <= leafSize/2+1) //rightSib doesn't have enough either
 	    {
 	      mergeRight();
+	      return *this;
 	    }
 	  else //borrowing works
 	    {
 	      borrowRight();
+	      return *this; 
 	    }
 	}
     }  

@@ -17,7 +17,8 @@ public:
   int getMinimum() const;
   LeafNode* insert(int value); // returns pointer to new Leaf if splits
   // else NULL
-  LeafNode* remove(int value); // NULL == no merge
+  LeafNode* remove(int value); // returns pointer to removed Leaf if merge
+  //NULL == no merge
   void mergeRight();
   void mergeLeft();
   void borrowRight();
