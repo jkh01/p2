@@ -133,26 +133,27 @@ LeafNode* LeafNode::remove(int value)
       LeafNode * rightSib = (LeafNode *) getRightSibling(); //we always have one sibling per Sean
       if(leftSib != 0) //go left
 	{
+	  //commented out stuff is because sean says we should only borrow from the left sibling if it exists (???)
 	  if(leftSib->getCount() <= leafSize/2 + leafSize%2) //leftSib doesn't have enough to donate
 	    {
-	      if(rightSib != 0) //rightSib doesn't have enough either
-		{
-		  if(rightSib->getCount() <= leafSize/2 + leafSize%2)
-		    {
-		      mergeLeft();
-		      return this;
-		    }
-		  else
-		    {
-		      borrowRight();
-		      return NULL;
-		    }
-		}
-	      else
-		{
-		  mergeLeft();
-		  return this;
-		}
+	      //if(rightSib != 0) //rightSib doesn't have enough either
+		//{
+	      //if(rightSib->getCount() <= leafSize/2 + leafSize%2)
+	      //{
+	      //  mergeLeft();
+	      //  return this;
+	      //	}
+	      //  else
+	      //    {
+	      //      borrowRight();
+	      //      return NULL;
+	      //    }
+	      //}
+	  //  else
+	  //	{
+	      mergeLeft();
+	      return this;
+	  //	}
 	    }
 	  else //borrowing works
 	    {
