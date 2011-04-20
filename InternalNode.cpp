@@ -184,7 +184,7 @@ BTreeNode* InternalNode::remove(int value)
 
   InternalNode* leftSib = (InternalNode*) getLeftSibling();
   InternalNode* rightSib = (InternalNode*) getRightSibling();
-  if(count <= internalSize/2 + internalSize%2)
+  if(count < internalSize/2 + internalSize%2)
     {
       if(leftSib != NULL && parent) //go left
 	{
