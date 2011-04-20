@@ -18,6 +18,10 @@ public:
   LeafNode* insert(int value); // returns pointer to new Leaf if splits
   // else NULL
   LeafNode* remove(int value); // NULL == no merge
+  void mergeRight();
+  void mergeLeft();
+  void borrowRight();
+  void borrowLeft();
   void print(Queue <BTreeNode*> &queue);
   LeafNode* split(int value, int last);
 
