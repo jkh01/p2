@@ -19,6 +19,7 @@ public:
   // else NULL
   LeafNode* remove(int value); // returns pointer to removed Leaf if merge
   //NULL == no merge
+  bool removeDriver(int value); //returns 1 if value not found
   void mergeRight();
   void mergeLeft();
   void borrowRight();

@@ -177,7 +177,7 @@ BTreeNode* InternalNode::remove(int value)
   for(i = 0; (value <= keys[i]) && (i < count); i++){} //value is in child i
 
   BTreeNode * kill = children[i]->remove(value); //recursive
- 
+  
   return NULL; // filler for stub
 } // InternalNode::remove(int value)
 
