@@ -56,8 +56,6 @@ void InternalNode::addToRight(BTreeNode *ptr, BTreeNode *last)
     parent->resetMinimum(this);
 } // InternalNode::addToRight()
 
-
-
 void InternalNode::addToThis(BTreeNode *ptr, int pos)
 {  // pos is where the ptr should go, guaranteed count < internalSize at start
   int i;
