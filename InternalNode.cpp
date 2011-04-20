@@ -199,11 +199,11 @@ BTreeNode* InternalNode::remove(int value)
 	      return NULL;
 	    }
 	}
-      else if(parent)
+      else if(parent) //go right
 	{
 	  if(rightSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
 	    {
-	      mergeLeft();
+	      mergeRight();
 	      return this;
 	    }
 	  else //borrow
@@ -251,6 +251,7 @@ void InternalNode::addDriver(BTreeNode *ptr)
     }
   keys[i] = key;
   children[i] = ptr;
+  count++;
 
   if(i == 0 && parent)
     parent->resetMinimum(this);
@@ -292,7 +293,7 @@ void InternalNode::borrowLeft()
 
 void InternalNode::borrowRight()
 {
-  InternalNode * rightSib = (InternalNode *) getLeftSibling();
+  InternalNode * rightSib = (InternalNode *) getRightSibling();
   addDriver(rightSib->children[0]); //add min value from sibling to borrower
   rightSib->removeDriver(0); //remove min value from sibling
 }
