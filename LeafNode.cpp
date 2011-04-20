@@ -137,7 +137,7 @@ LeafNode* LeafNode::remove(int value)
       count--;
     }
   
-  if(count < (leafSize/2+1)) //we need to borrow or merge!
+  if(count < (leafSize/2+1) && parent != NULL) //we need to borrow or merge!
     {
       LeafNode * leftSib = (LeafNode *) getLeftSibling();
       if(leftSib != 0) //go left
