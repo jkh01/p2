@@ -24,6 +24,10 @@ public:
   void print(Queue <BTreeNode*> &queue);
   BTreeNode* remove(int value);
   void fixMerge(int value, int count);
+  void mergeLeft(int value);
+  void mergeRight(int value);
+  void borrowLeft(int value);
+  void borrowRight(int value);
   void resetMinimum(const BTreeNode* child);
   InternalNode* split(BTreeNode *last);
 }; // InternalNode class

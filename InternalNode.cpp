@@ -183,9 +183,36 @@ BTreeNode* InternalNode::remove(int value)
     fixMerge(value, i-1); //clean up the keys and children
   }
 
+  InternalNode* leftSib = (InternalNode*) getLeftSibling();
+  InternalNode* rightSib = (InternalNode*) getRightSibling();
   if(count <= internalSize/2 + internalSize%2)
     {
-      
+      if(leftSib != NULL && parent) //go left
+	{
+	  if(leftSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
+	    {
+	      mergeLeft(value);
+	      return NULL;//return this;
+	    }
+	  else //borrow
+	    {
+	      borrowLeft(value);
+	      return NULL;
+	    }
+	}
+      else if(parent)
+	{
+	  if(rightSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
+	    {
+	      mergeLeft(value);
+	      return NULL; //return this;
+	    }
+	  else //borrow
+	    {
+	      borrowRight(value);
+	      return NULL;
+	    }
+	}
     }
   
   return NULL; // filler for stub
@@ -206,6 +233,22 @@ void InternalNode::fixMerge(int value, int i)
 
   if(value == min && parent)
     parent->resetMinimum(this);
+}
+
+void InternalNode::mergeLeft(int value)
+{
+}
+
+void InternalNode::mergeRight(int value)
+{
+}
+
+void InternalNode::borrowLeft(int value)
+{
+}
+
+void InternalNode::borrowRight(int value)
+{
 }
 
 void InternalNode::resetMinimum(const BTreeNode* child)
