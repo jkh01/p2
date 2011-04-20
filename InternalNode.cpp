@@ -244,7 +244,7 @@ void InternalNode::addDriver(BTreeNode *ptr)
 {
   int key = ptr->getMinimum();
   int i = getPosition(key);
-  for(int j = count-2; j > i; i--) //shift values up
+  for(int j = count-2; j > i; j--) //shift values up
     {
       keys[j+1] = keys[j];
       children[j+1] = children[j];
@@ -262,7 +262,8 @@ void InternalNode::mergeLeft()
   InternalNode * leftSib = (InternalNode *) getLeftSibling();
   while(count != 0)
     {
-      borrowLeft();
+      leftSib->addDriver(children[0]); //minimize shifting
+      removeDriver(0); //delete shifted value
     }
   InternalNode * rightSib = (InternalNode *) getRightSibling();
   leftSib->rightSibling = rightSib;
@@ -272,12 +273,14 @@ void InternalNode::mergeLeft()
 
 void InternalNode::mergeRight()
 {
+ 
+  InternalNode * rightSib = (InternalNode *) getRightSibling();
   while(count != 0)
     {
-      borrowRight(); //expensive, annoying to optimize though
+      rightSib->addDriver(children[0]); //minimize shifting
+      removeDriver(0); //delete shifted value
     }
   InternalNode * leftSib = (InternalNode *) getLeftSibling();
-  InternalNode * rightSib = (InternalNode *) getRightSibling();
   rightSib->leftSibling = leftSib;
   if(leftSib != NULL)
     leftSib->rightSibling = rightSib;
