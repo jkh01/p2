@@ -173,7 +173,7 @@ void InternalNode::print(Queue <BTreeNode*> &queue)
 
 BTreeNode* InternalNode::remove(int value)
 {  // to be written by students
-  int pos = findPosition(value);
+  int pos = getPosition(value);
 
   BTreeNode* killed = children[pos]->remove(value);
 
@@ -217,7 +217,7 @@ BTreeNode* InternalNode::remove(int value)
   return NULL; // filler for stub
 } // InternalNode::remove(int value)
 
-int InternalNode::findPosition(int value)
+int InternalNode::getPosition(int value)
 {
   int i;
   for(i = 0; (value >= keys[i]) && (i < count); i++){/*empty for loop*/}
@@ -228,7 +228,7 @@ void InternalNode::removeDriver(int value, int i)
 {
   int j;
   int min = getMinimum();
-  for(j=i; j < count-1; j++) //write over old value
+  for(j=i; j < count-1; j++) //write over old value (shift down)
     {
       keys[j] = keys[j+1];
       children[j] = children[j+1];
@@ -239,6 +239,19 @@ void InternalNode::removeDriver(int value, int i)
 
   if(value == min && parent)
     parent->resetMinimum(this);
+}
+
+void InternalNode::addDriver(BTreeNode *ptr)
+{
+  int key = ptr->getMinimum();
+  int i = getPosition(key);
+  for(int j = count-2; j > i; i--) //shift values up
+    {
+      keys[j+1] = keys[j];
+      children[j+1] = children[j];
+    }
+  keys[i] = key;
+  children[i] = ptr;
 }
 
 void InternalNode::mergeLeft(int value)
