@@ -11,7 +11,6 @@ class InternalNode:public BTreeNode
 public:
   InternalNode(int ISize, int LSize, InternalNode *p,
     BTreeNode *left, BTreeNode *right);
-  virtual ~InternalNode(); // destructor
   BTreeNode* addPtr(BTreeNode *ptr, int pos);
   void addToLeft(BTreeNode *last);
   void addToRight(BTreeNode *ptr, BTreeNode *last);
