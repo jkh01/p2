@@ -1,5 +1,3 @@
-//Justin Horton, Jonathan Hollenbeck
-
 #ifndef LeafNodeH
 #define LeafNodeH
 

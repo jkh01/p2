@@ -1,5 +1,3 @@
-//Justin Horton, Jonathan Hollenbeck
-
 #include <iostream>
 #include <climits>
 #include "InternalNode.h"

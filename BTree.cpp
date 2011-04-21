@@ -1,5 +1,3 @@
-//Justin Horton, Jonathan Hollenbeck
-
 #include <iostream>
 #include "BTree.h"
 #include "BTreeNode.h"
