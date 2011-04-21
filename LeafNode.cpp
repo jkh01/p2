@@ -135,38 +135,36 @@ LeafNode* LeafNode::remove(int value)
   
   if(count < (leafSize/2 + leafSize%2) && parent != NULL) //we need to borrow or merge!
     {
-      //note: code is a bit convoluted since we segfault in the obvious version (rightSib->getCount() if rightSib == 0)
-      LeafNode * leftSib = (LeafNode *) getLeftSibling();
-      LeafNode * rightSib = (LeafNode *) getRightSibling(); //we always have one sibling per Sean
-      if(leftSib != 0) //go left
+      LeafNode * leftSib = (LeafNode *) getLeftSibling(); //prevent verbose casting
+      LeafNode * rightSib = (LeafNode *) getRightSibling(); 
+      if(leftSib != 0) //only borrow from the right if left doesn't exist
 	{
-	  //sean says we should only borrow from the right if left doesn't exist
-	  if(leftSib->getCount() <= leafSize/2 + leafSize%2) //leftSib doesn't have enough to donate
+	  if(leftSib->getCount() <= leafSize/2 + leafSize%2) //merge left
 	    {
-	      mergeLeft();
-	      return this;
-	    }
-	  else //borrowing works
+	      mergeLeft(); 
+	      return this; 
+	    } //if merge left
+	  else //leftSib can donate
 	    {
 	      borrowLeft();
 	      return NULL;
-	    }
+	    } //if borrow left
 	}
-      else if (rightSib != 0 && parent != NULL)//go right
+      else if (rightSib != 0 && parent != NULL)//rightSib exists && is not root
 	{
-	  if(rightSib->getCount() <= leafSize/2 + leafSize%2) //rightSib doesn't have enough either
+	  if(rightSib->getCount() <= leafSize/2 + leafSize%2) //merge right
 	    {
-	      mergeRight();
-	      return this;
-	    }
-	  else //borrowing
+	      mergeRight(); 
+	      return this; 
+	    } //if merge right
+	  else //borrow right
 	    {
-	      borrowRight();
+	      borrowRight(); 
 	      return NULL;
-	    }
+	    } //if borrow right
 	}
     }  
-  return NULL;  
+  return NULL;  //for case root
 } // LeafNode::remove()
 
 bool LeafNode::removeDriver(int value)
@@ -181,14 +179,14 @@ bool LeafNode::removeDriver(int value)
   int j;
   for (j = i; j < (count-1); j++) //shift values down
     values[j] = values[j+1];
-  values[j+1] = NULL; //node #count-1  must be null after remove
+  values[j+1] = NULL; //node values[count]  must be null after remove
   count--;
 
   if(value == min && parent) //if it has a parent and is the min
     parent->resetMinimum(this);
 
   return 0;
-}
+} //LeafNode::removeDriver()
 
 void LeafNode::mergeLeft()
 {
@@ -204,19 +202,7 @@ void LeafNode::mergeLeft()
   if(rightSib!=0)
     rightSib->leftSibling = leftSib;
   leftSib->rightSibling = rightSib;
-
-  /* potentially faster
-  int sibCount = leftSib->getCount();
-  int dif = sibCount - count; //difference in size
-  for(int i = sibCount; i < leafSize; i++) //add 
-    {
-      leftSib->values[sibCount] = values[sibCount-dif]; //merge inorder, min to max
-      leftSib->count++;
-      values[sibCount-dif] = NULL; //delete old value
-    }
-  count = 0;
-  */
-}
+} //LeafNode::mergeLeft()
 
 void LeafNode::mergeRight()
 {
@@ -231,22 +217,7 @@ void LeafNode::mergeRight()
   rightSib->leftSibling = leftSib;
   if(leftSib != 0) //if left exists
     leftSib->rightSibling = rightSib;
-  
-  /* this code is potentially faster but also more perilous (maybe add after everything works for speed?)
-
-    int sibCount = rightSib->getCount();
-  for(int i = sibCount-1; i >= 0; i--) //shift values up so we can merge in front  
-    {
-      rightSib->values[i+count] = rightSib->values[i];
-      rightSib->count++;
-    }
-  for(int i = 0; i < count; i++) //install in front min to max
-    {
-      rightSib->values[i] = values[i];
-      values[i] = NULL;
-    }
-  count = 0;*/
-}
+} //LeafNode::mergeRight()
 
 void LeafNode::borrowLeft()
 {
@@ -254,7 +225,7 @@ void LeafNode::borrowLeft()
   int borrow = leftSib->getMaximum(); //we want the max value from sibling
   leftSib->removeDriver(borrow); //remove it from leftSib, ours now!
   addToThis(borrow); //install the new value
-}
+} //LeafNode::borrowLeft()
 
 void LeafNode::borrowRight()
 {
@@ -262,7 +233,7 @@ void LeafNode::borrowRight()
   int borrow = rightSib->getMinimum(); //we want the min value from sibling
   rightSib->removeDriver(borrow); //remove it from rightSib, ours now!
   addToThis(borrow); //install the new value
-}
+} //LeafNode::borrowRight()
 
 LeafNode* LeafNode::split(int value, int last)
 {
