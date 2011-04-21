@@ -197,7 +197,7 @@ BTreeNode* InternalNode::remove(int value)
 	      return NULL;
 	    }
 	}
-      else if(parent) //go right
+      else if(rightSib != NULL && parent) //go right
 	{
 	  if(rightSib->count <= internalSize/2 + internalSize % 2) //can't borrow, so merge!
 	    {
