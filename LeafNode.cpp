@@ -161,7 +161,7 @@ LeafNode* LeafNode::remove(int value)
 	      return NULL;
 	    }
 	}
-      else if (parent != NULL)//go right
+      else if (rightSib != 0 && parent != NULL)//go right
 	{
 	  if(rightSib->getCount() <= leafSize/2 + leafSize%2) //rightSib doesn't have enough either
 	    {
