@@ -16,8 +16,6 @@ InternalNode::InternalNode(int ISize, int LSize,
 
 InternalNode::~InternalNode()
 {
-  delete keys;
-  delete children;
 } //InternalNode::~InternalNode()
 
 BTreeNode* InternalNode::addPtr(BTreeNode *ptr, int pos)
@@ -187,9 +185,6 @@ BTreeNode* InternalNode::remove(int value)
   {
     removeDriver(pos); //clean up the keys and children
     delete killed;
-
-    if(parent)
-      parent->resetMinimum(this);
   }
 
   InternalNode* leftSib = (InternalNode*) getLeftSibling();

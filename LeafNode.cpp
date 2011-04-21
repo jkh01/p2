@@ -17,7 +17,6 @@ LeafNode::LeafNode(int LSize, InternalNode *p,
 
 LeafNode::~LeafNode()
 {
-  delete values;
 } //  LeafNode::~LeafNode()
 
 void LeafNode::addToLeft(int value, int last)
