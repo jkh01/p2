@@ -179,6 +179,9 @@ BTreeNode* InternalNode::remove(int value)
   {
     removeDriver(pos); //clean up the keys and children
     delete killed;
+
+    if(parent)
+      parent->resetMinimum(this);
   }
 
   InternalNode* leftSib = (InternalNode*) getLeftSibling();
@@ -272,7 +275,7 @@ void InternalNode::mergeRight()
   if(leftSib != NULL)
     leftSib->rightSibling = rightSib;
   if(parent)
-    parent->resetMinimum(this);
+    parent->resetMinimum(rightSib);
 }
 
 void InternalNode::borrowLeft()
@@ -291,7 +294,7 @@ void InternalNode::borrowRight()
   insert(rightSib->children[0]); //add min value from sibling to borrower
   rightSib->removeDriver(0); //remove min value from sibling
   if(parent)
-    parent->resetMinimum(this);
+    parent->resetMinimum(rightSib);
 }
 
 void InternalNode::resetMinimum(const BTreeNode* child)
