@@ -13,7 +13,12 @@ LeafNode::LeafNode(int LSize, InternalNode *p,
   BTreeNode *left, BTreeNode *right) : BTreeNode(LSize, p, left, right)
 {
   values = new int[LSize];
-}  // LeafNode()
+}  // LeafNode::LeafNode()
+
+LeafNode::~LeafNode()
+{
+  delete values;
+} //  LeafNode::~LeafNode()
 
 void LeafNode::addToLeft(int value, int last)
 {
@@ -125,8 +130,8 @@ void LeafNode::print(Queue <BTreeNode*> &queue)
 LeafNode* LeafNode::remove(int value)
 {   // To be written by students
   
-  if(removeDriver(value)) //if not found, return null
-    return NULL;
+  if(removeDriver(value)) 
+    return NULL; //remove fails
   
   if(count < (leafSize/2 + leafSize%2) && parent != NULL) //we need to borrow or merge!
     {
@@ -135,27 +140,11 @@ LeafNode* LeafNode::remove(int value)
       LeafNode * rightSib = (LeafNode *) getRightSibling(); //we always have one sibling per Sean
       if(leftSib != 0) //go left
 	{
-	  //commented out stuff is because sean says we should only borrow from the left sibling if it exists (???)
+	  //sean says we should only borrow from the right if left doesn't exist
 	  if(leftSib->getCount() <= leafSize/2 + leafSize%2) //leftSib doesn't have enough to donate
 	    {
-	      //if(rightSib != 0) //rightSib doesn't have enough either
-		//{
-	      //if(rightSib->getCount() <= leafSize/2 + leafSize%2)
-	      //{
-	      //  mergeLeft();
-	      //  return this;
-	      //	}
-	      //  else
-	      //    {
-	      //      borrowRight();
-	      //      return NULL;
-	      //    }
-	      //}
-	  //  else
-	  //	{
 	      mergeLeft();
 	      return this;
-	  //	}
 	    }
 	  else //borrowing works
 	    {

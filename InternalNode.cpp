@@ -14,6 +14,12 @@ InternalNode::InternalNode(int ISize, int LSize,
   children = new BTreeNode* [ISize];
 } // InternalNode::InternalNode()
 
+InternalNode::~InternalNode()
+{
+  delete keys;
+  delete children;
+} //InternalNode::~InternalNode()
+
 BTreeNode* InternalNode::addPtr(BTreeNode *ptr, int pos)
 { // called when original was full, pos is where the node belongs.
   if(pos == internalSize)
