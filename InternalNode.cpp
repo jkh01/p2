@@ -225,7 +225,7 @@ int InternalNode::getPosition(int value)
 void InternalNode::removeDriver(int i)
 {
   int j;
-  for(j=i; j < count-2; j++) //write over old value (shift down)
+  for(j=i; j < count-1; j++) //write over old value (shift down)
     {
       keys[j] = keys[j+1];
       children[j] = children[j+1];
