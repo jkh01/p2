@@ -242,23 +242,6 @@ void InternalNode::removeDriver(int i)
   //parent->resetMinimum(this);
 }
 
-void InternalNode::addDriver(BTreeNode *ptr)
-{
-  int key = ptr->getMinimum();
-  int i = getPosition(key);
-  for(int j = count-2; j >= i; j--) //shift values up
-    {
-	  keys[j+1] = keys[j];
-	  children[j+1] = children[j];
-    }
-  keys[i] = key;
-  children[i] = ptr;
-  count++;
-
-  //if(i==0 && parent)
-  //parent->resetMinimum(this);
-}
-
 void InternalNode::mergeLeft()
 {
   InternalNode * leftSib = (InternalNode *) getLeftSibling();
