@@ -1,3 +1,5 @@
+//Justin Horton, Jonathan Hollenbeck
+
 #include <iostream>
 #include <climits>
 #include "LeafNode.h"

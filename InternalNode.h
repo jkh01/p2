@@ -1,3 +1,5 @@
+//Justin Horton, Jonathan Hollenbeck
+
 #ifndef InternalNodeH
   #define InternalNodeH
 
