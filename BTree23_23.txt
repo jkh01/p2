@@ -1,0 +1,4 @@
+This file inserts 23 values and then deletes 23
+i1 i2 i3 i4 i5 i6 i7 i8 i9 i10 i11 i12 i13 i14 i15 i16 i17 i18 i19 i20 i21 i22 i23 d12 d1 d3 d7 d23 d9 d13 d4 d6 d5 d2 d17 d16 d19 d20 d21 d22 d11 d14 d15 d18 d8 d10
+
+
