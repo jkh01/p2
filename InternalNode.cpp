@@ -203,7 +203,7 @@ BTreeNode* InternalNode::remove(int value)
 	    {
 	      mergeRight();
 	      return this;
-	    }
+	      }
 	  else //borrow
 	    {
 	      borrowRight();
@@ -242,7 +242,7 @@ void InternalNode::addDriver(BTreeNode *ptr)
 {
   int key = ptr->getMinimum();
   int i = getPosition(key);
-  for(int j = count-2; j > i; j--) //shift values up
+  for(int j = count-2; j >= i; j--) //shift values up
     {
       keys[j+1] = keys[j];
       children[j+1] = children[j];
