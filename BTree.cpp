@@ -39,5 +39,8 @@ void BTree::print()
 
 void BTree::remove(int value)
 {  // To be written by students
-  root->remove(value);
+  BTreeNode* maybeRoot = root->remove(value);
+
+  if (maybeRoot && dynamic_cast<InternalNode*>(root))
+    root = maybeRoot;
 } // BTree::remove()

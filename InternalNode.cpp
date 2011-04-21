@@ -211,7 +211,10 @@ BTreeNode* InternalNode::remove(int value)
 	    }
 	}
     }
-  
+
+  if (children[1] == NULL) // only child, return new root
+    return children[0];
+ 
   return NULL; // filler for stub
 } // InternalNode::remove(int value)
 
