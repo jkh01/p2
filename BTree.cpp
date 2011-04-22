@@ -42,5 +42,8 @@ void BTree::remove(int value)
   BTreeNode* maybeRoot = root->remove(value);
 
   if (maybeRoot && dynamic_cast<InternalNode*>(root))
+  {
+    delete root;
     root = maybeRoot;
+  } // if
 } // BTree::remove()

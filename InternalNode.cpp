@@ -216,9 +216,13 @@ BTreeNode* InternalNode::remove(int value)
 	}
     }
 
+  // if the function gets to here without returning, this condition should be enough
   if (children[1] == NULL) // only child, return new root (??)
+  {
+    children[0]->setParent(NULL);
     return children[0];
- 
+  } // if
+
   return NULL; // filler for stub
 } // InternalNode::remove()
 
