@@ -172,7 +172,7 @@ bool LeafNode::removeDriver(int value)
   int j;
   for (j = i; j < (count-1); j++) //shift values down
     values[j] = values[j+1];
-  values[j+1] = NULL; //node value[count-1]  must be null after remove
+  values[j] = NULL; //node value[count-1]  must be null after remove
   count--;
 
   if(value == min && parent) //if it has a parent and is the min
