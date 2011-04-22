@@ -241,8 +241,8 @@ void InternalNode::removeDriver(int i)
   children[j] = NULL;
   count--;
 
-  //if(i==0 && parent)
-  //parent->resetMinimum(this);
+  if(i==0 && parent)
+    parent->resetMinimum(this);
 } //InternalNode::removeDriver()
 
 void InternalNode::mergeLeft()
